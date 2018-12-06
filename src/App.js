@@ -7,6 +7,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state  = {
       tasks  : [],
     };
@@ -14,33 +15,55 @@ class App extends Component {
     this.onGenerateData = this.onGenerateData.bind(this);
   }
 
+  componentWillMount() {
+    if (localStorage.getItem('tasks')){
+      var tasks = JSON.parse(localStorage.getItem('tasks'));
+      this.setState({
+        tasks : tasks
+      })
+    }
+  }
+
   onGenerateData(){
     var dataTasks = [
       {
-        id      : '1',
+        id      : this.genegrateId(),
         name    : 'Game',
         status  : false
       },
       {
-        id      : '2',
+        id      : this.genegrateId(),
         name    : 'Code',
         status  : true
       },
       {
-        id      : '3',
+        id      : this.genegrateId(),
         name    : 'Sleep',
         status  : false
       },
     ];
 
+    localStorage.setItem('tasks', JSON.stringify(dataTasks));
+
     this.setState({
       tasks : dataTasks,
     });
+  }
 
-    console.log(this.state.tasks);
+  ramdomString(){
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+
+  genegrateId(){
+    return this.ramdomString() + "-" + this.ramdomString() + "-" + this.ramdomString() + "-" +this.ramdomString() + "-" +
+      this.ramdomString() + "-" + this.ramdomString() + "-" + this.ramdomString() + "-" + this.ramdomString() + "-" +
+      this.ramdomString() + "-" + this.ramdomString() + "-" + this.ramdomString() + "-" + this.ramdomString() + "-" +
+      this.ramdomString() + "-" + this.ramdomString();
   }
 
   render() {
+    console.log(this.state.tasks);
+
     return (
       <div className="container">
         <div className="text-center">
@@ -55,7 +78,7 @@ class App extends Component {
             <button type="button" className="btn btn-primary"><span className="fa fa-plus mr-5"/>Thêm Công Việc</button>
             <button type="button" className="btn btn-danger" onClick={this.onGenerateData}>Generate Data</button>
             <TaskControl/>
-            <TaskList />
+            <TaskList tasks={ this.state.tasks } />
           </div>
         </div>
       </div>

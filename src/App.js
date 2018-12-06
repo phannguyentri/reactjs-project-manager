@@ -9,7 +9,8 @@ class App extends Component {
     super(props);
 
     this.state  = {
-      tasks  : [],
+      tasks       : [],
+      toggleForm  : true
     };
 
     this.onGenerateData = this.onGenerateData.bind(this);
@@ -50,6 +51,12 @@ class App extends Component {
     });
   }
 
+  onToggleForm(){
+    this.setState({
+      toggleForm : !this.state.toggleForm
+    });
+  }
+
   ramdomString(){
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
   }
@@ -75,8 +82,10 @@ class App extends Component {
             <TaskForm />
           </div>
           <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary"><span className="fa fa-plus mr-5"/>Thêm Công Việc</button>
-            <button type="button" className="btn btn-danger" onClick={this.onGenerateData}>Generate Data</button>
+            <button type="button" className="btn btn-primary" onClick={ this.onToggleForm }>
+              <span className="fa fa-plus mr-5"/>Thêm Công Việc
+            </button>
+            <button type="button" className="btn btn-danger" onClick={ this.onGenerateData }>Generate Data</button>
             <TaskControl/>
             <TaskList tasks={ this.state.tasks } />
           </div>

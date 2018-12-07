@@ -1,22 +1,53 @@
 import React, {Component} from 'react';
 
 class TaskForm extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      name    : '',
+      status  : false
+    };
+  }
+
+  onClose = () => {
+    this.props.onClose();
+  };
+
+  onChange = (e) => {
+    this.setState({
+      [e.target.name] : e.target.value
+    });
+  };
+
+  onSubmit = (e) =>{
+    let dataTask = {
+      name    : this.state.name,
+      status  : this.state.status
+    };
+
+    this.props.onSubmit(dataTask);
+    e.preventDefault();
+  };
+
   render() {
+    let { name, status } = this.state;
+
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
-          <h3 className="panel-title">Thêm Công Việc<span className="fa fa-times-circle text-right"/></h3>
+          <h3 className="panel-title" onClick={ this.onClose }>Thêm Công Việc<span className="fa fa-times-circle text-right" /></h3>
         </div>
         <div className="panel-body">
-          <form>
+          <form onSubmit={ this.onSubmit }>
             <div className="form-group">
               <label>Tên :</label>
-              <input type="text" className="form-control" name="name" />
+              <input type="text" className="form-control" name="name" value={ name } onChange={ this.onChange } />
             </div>
             <label>Trạng Thái :</label>
-            <select className="form-control" name="status">
-              <option value="true">Kích Hoạt</option>
-              <option value="false">Ẩn</option>
+            <select className="form-control" name="status" value={ status } onChange={ this.onChange }>
+              <option value={ true }>Kích Hoạt</option>
+              <option value={ false }>Ẩn</option>
             </select>
             <br />
             <div className="text-center">

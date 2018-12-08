@@ -87,6 +87,22 @@ class App extends Component {
       this.ramdomString() + "-" + this.ramdomString();
   }
 
+  deleteTask = (taskId) => {
+    let dataTasks = this.state.tasks;
+
+    dataTasks.forEach((task, index) => {
+      if (task.id === taskId){
+        dataTasks.splice(index, 1);
+      }
+    });
+
+    this.setState({
+      tasks : dataTasks
+    });
+
+    localStorage.setItem('tasks', JSON.stringify(dataTasks))
+  };
+
   render() {
     console.log(this.state.tasks);
 
@@ -104,12 +120,12 @@ class App extends Component {
             { isDisplayForm ? <TaskForm onClose={ this.onCloseForm } onSubmit={ this.onSubmit } /> : '' }
           </div>
           <div className={ colForm }>
-            <button type="button" className="btn btn-primary" onClick={ this.onToggleForm }>
+            <button type="button" className="btn btn-primary fix-bottom" onClick={ this.onToggleForm }>
               <span className="fa fa-plus mr-5"/>Thêm Công Việc
             </button>
             <button type="button" className="btn btn-danger hide" onClick={ this.onGenerateData }>Generate Data</button>
             <TaskControl/>
-            <TaskList tasks={ tasks } />
+            <TaskList tasks={ tasks } deleteTask={ this.deleteTask } />
           </div>
         </div>
       </div>

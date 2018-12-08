@@ -27,7 +27,16 @@ class TaskForm extends Component {
     };
 
     this.props.onSubmit(dataTask);
+    this.onCancel();
     e.preventDefault();
+  };
+
+  onCancel = () => {
+    this.setState({
+      name    : '',
+      status  : false
+    });
+    this.props.onClose();
   };
 
   render() {
@@ -54,7 +63,7 @@ class TaskForm extends Component {
               <button type="submit" className="btn btn-warning"><span className="fa fa-plus mr-5"/>Lưu Lại
               </button>
               &nbsp;
-              <button type="button" className="btn btn-danger"><span className="fa fa-close mr-5"/>Hủy Bỏ
+              <button type="button" className="btn btn-danger" onClick={ this.onCancel } ><span className="fa fa-close mr-5"/>Hủy Bỏ
               </button>
             </div>
           </form>

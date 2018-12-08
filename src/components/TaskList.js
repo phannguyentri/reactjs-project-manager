@@ -2,11 +2,18 @@ import React, {Component} from 'react';
 import TaskItem from './TaskItem';
 
 class TaskList extends Component {
+
+  onReceiveDelete = (taskId) => {
+    // console.log(taskId);
+    this.props.deleteTask(taskId);
+  };
+
   render() {
     let { tasks } = this.props;
 
     let elementTasks = tasks.map((task, index) => {
-      return <TaskItem key={ index } name={ task.name } status={ task.status }/>
+      return <TaskItem key={ index } id={ task.id } name={ task.name } status={ task.status }
+                       onReceiveDelete={ this.onReceiveDelete }/>
     });
 
     return (

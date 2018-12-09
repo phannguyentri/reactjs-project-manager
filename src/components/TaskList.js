@@ -3,9 +3,21 @@ import TaskItem from './TaskItem';
 
 class TaskList extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterName    : '',
+      filterStatus  : 0 // disable -1 , 0 all, 1 enable
+    };
+  }
+
+
   onReceiveDelete = (taskId) => {
-    // console.log(taskId);
     this.props.deleteTask(taskId);
+  };
+
+  onChange = (e) => {
+    console.log(e.target.value, this.state.filterStatus);
   };
 
   render() {
@@ -32,12 +44,20 @@ class TaskList extends Component {
             <tr>
               <td/>
               <td>
-                <input type="text" className="form-control" name="filterName" />
+                <input type="text"
+                       className="form-control"
+                       name="filterName"
+                       value={ this.state.name }
+                       onChange={ this.onChange } />
               </td>
               <td>
-                <select className="form-control" name="filterStatus">
-                  <option value="-1">Tất Cả</option>
-                  <option value="0">Ẩn</option>
+                <select className="form-control"
+                        name="filterStatus"
+                        value={ this.state.filterStatus }
+                        onChange={ this.onChange }
+                >
+                  <option value="0">Tất Cả</option>
+                  <option value="-1">Ẩn</option>
                   <option value="1">Kích Hoạt</option>
                 </select>
               </td>

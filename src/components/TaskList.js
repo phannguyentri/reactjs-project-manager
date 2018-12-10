@@ -17,7 +17,12 @@ class TaskList extends Component {
   };
 
   onChange = (e) => {
-    console.log(e.target.value, this.state.filterStatus);
+    let nameFilter  = e.target.name;
+    let valueFilter = e.target.value;
+    this.setState({
+      [nameFilter] : valueFilter
+    });
+    this.props.onFilter(nameFilter, valueFilter);
   };
 
   render() {

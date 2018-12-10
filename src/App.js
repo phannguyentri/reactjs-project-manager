@@ -9,8 +9,10 @@ class App extends Component {
     super(props);
 
     this.state  = {
-      tasks       : [],
-      isDisplayForm  : true
+      tasks           : [],
+      isDisplayForm   : true,
+      filterName      : '',
+      filterStatus    : ''
     };
 
     this.onGenerateData = this.onGenerateData.bind(this);
@@ -103,11 +105,35 @@ class App extends Component {
     localStorage.setItem('tasks', JSON.stringify(dataTasks))
   };
 
+  onFilter = (responseName, responseValue) => {
+    this.setState({
+      [responseName] : responseValue
+    });
+  };
+
   render() {
-    console.log(this.state.tasks);
+    console.log(this.state);
 
     let { tasks, isDisplayForm } = this.state;
     let colForm = isDisplayForm ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12';
+
+    if (this.state.filterName) {
+      tasks = tasks.filter((task) => {
+        return task.name.toLowerCase().indexOf(this.state.filterName) !== -1;
+      });
+    }
+
+    if (this.state.filterStatus != '') {
+      tasks = tasks.filter((task) => {
+        if (parseInt(this.state.filterStatus) === 0){
+          return true;
+        }else{
+          return (task.status) === ((parseInt(this.state.filterStatus) === 1));
+        }
+      });
+    }
+
+    console.log(tasks);
 
     return (
       <div className="container">
@@ -120,12 +146,18 @@ class App extends Component {
             { isDisplayForm ? <TaskForm onClose={ this.onCloseForm } onSubmit={ this.onSubmit } /> : '' }
           </div>
           <div className={ colForm }>
-            <button type="button" className="btn btn-primary fix-bottom" onClick={ this.onToggleForm }>
+            <button type="button"
+                    className="btn btn-primary fix-bottom"
+                    onClick={ this.onToggleForm }>
               <span className="fa fa-plus mr-5"/>Thêm Công Việc
             </button>
-            <button type="button" className="btn btn-danger hide" onClick={ this.onGenerateData }>Generate Data</button>
+            <button type="button"
+                    className="btn btn-danger hide"
+                    onClick={ this.onGenerateData }>Generate Data</button>
             <TaskControl/>
-            <TaskList tasks={ tasks } deleteTask={ this.deleteTask } />
+            <TaskList tasks={ tasks }
+                      deleteTask={ this.deleteTask }
+                      onFilter={ this.onFilter } />
           </div>
         </div>
       </div>

@@ -12,7 +12,9 @@ class App extends Component {
       tasks           : [],
       isDisplayForm   : true,
       filterName      : '',
-      filterStatus    : ''
+      filterStatus    : '',
+      sortBy          : '',
+      sortValue       : ''
     };
 
     this.onGenerateData = this.onGenerateData.bind(this);
@@ -111,10 +113,19 @@ class App extends Component {
     });
   };
 
+  onSort = (sortBy, sortValue) => {
+    console.log(sortBy, sortValue);
+    this.setState({
+      sortBy    : sortBy,
+      sortValue : sortValue
+    });
+
+  };
+
   render() {
     console.log(this.state);
 
-    let { tasks, isDisplayForm } = this.state;
+    let { tasks, isDisplayForm, sortBy, sortValue } = this.state;
     let colForm = isDisplayForm ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12';
 
     if (this.state.filterName) {
@@ -131,6 +142,22 @@ class App extends Component {
           return (task.status) === ((parseInt(this.state.filterStatus) === 1));
         }
       });
+    }
+
+    // sort
+    if (sortBy === 'name'){
+      tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if(a.name < b.name) return -sortValue;
+        else return 0;
+      })
+    }
+    if (sortBy === 'status'){
+      tasks.sort((a, b) => {
+        if (a.status > b.status) return -sortValue;
+        else if(a.status < b.status) return sortValue;
+        else return 0;
+      })
     }
 
     console.log(tasks);
@@ -154,7 +181,7 @@ class App extends Component {
             <button type="button"
                     className="btn btn-danger hide"
                     onClick={ this.onGenerateData }>Generate Data</button>
-            <TaskControl/>
+            <TaskControl onSort={ this.onSort }/>
             <TaskList tasks={ tasks }
                       deleteTask={ this.deleteTask }
                       onFilter={ this.onFilter } />

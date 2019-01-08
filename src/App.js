@@ -182,8 +182,7 @@ class App extends Component {
                     className="btn btn-danger hide"
                     onClick={ this.onGenerateData }>Generate Data</button>
             <TaskControl onSort={ this.onSort }/>
-            <TaskList tasks={ tasks }
-                      deleteTask={ this.deleteTask }
+            <TaskList deleteTask={ this.deleteTask }
                       onFilter={ this.onFilter } />
           </div>
         </div>
